@@ -30,7 +30,9 @@ The following series of commands can be used to check the artifact for any techn
     ./combine_results.pl
     cd Results
     make
-    xdg-open table.pdf &; xdg-open extended_table.pdf &
+    xdg-open table.pdf &
+    xdg-open extended_table.pdf &
+    cd ..
 
 ## Artifact Instructions
 
@@ -62,9 +64,21 @@ The following commands combine the results computed and stored in the previous s
     ./combine_results.pl
     cd Results
     make
-    xdg-open table.pdf &; xdg-open extended_table.pdf &
+    xdg-open table.pdf &
+    xdg-open extended_table.pdf &
+    cd ..
 
-## SPASS-SPL (v0.7)
+### The run_selection.pl Script in Detail
+
+TODO
+
+### The combine_results.pl Script in Detail
+
+TODO
+
+## Tools Tested
+
+### SPASS-SPL (v0.7)
 
 [SPASS-SPL (v0.7)](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) can be used as a decision procedure for the first-order fragment of pure approximately grounded Horn Bernays-Schoenfinkel modulo simple linear (mixed real-integer) arithmetic (HBS(SLR)AP). To solve an HBS(SLR)AP problem encoded in the [FTCNF language](#ftcnf-language), execute [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) with the option `-d`:
 
@@ -76,7 +90,7 @@ The following commands combine the results computed and stored in the previous s
 
 If the input file `<file>.ftcnf` contains no universal conjecture, then [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) will assume `false` as the universal conjecture. In this case, [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) returns `Conjecture proven!` if the clause set is unsatisfiable (because "false" can only be entailed by an unsatisfiable clause set) and `Conjecture refuted!` if the clause set is satisfiable.
 
-### Transformation of FTCNF problems into other input languages
+#### Transformation of FTCNF problems into other input languages
 
 [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) can transform FTCNF problems into the SMT-LIB 2.6 and into the CHC competition format. The respective options to do so are `-S -p` and `-C -p`.
 
@@ -84,14 +98,14 @@ If the input file `<file>.ftcnf` contains no universal conjecture, then [SPASS-S
 
 We already transformed all problems into the various formats. They can be found in the `Benchmarks` folder under the folder named after the respective file ending. For instance, `Benchmarks/smt2/ecu_u1.smt2` is the output of `./bin/SPASS-SPL -S -p Benchmarks/ftcnf/ecu_u1.ftcnf`
 
-### Additional Options
+#### Additional Options
 
 * Option `-h`: hammer statistics, prints statistics of the DATALOG hammer. (The size of largest test point set and the size of hammered universal conjecture.)
 * Option `-q <query>`: returns all derivable facts over our test points matching the given query. (Only applicable in combination with -d). E.g. <query> := "P(X0,X1)" returns all facts derivable for the predicate P.
 * Option `-qall`: returns all derivable facts over our test points. (Only applicable in combination with -d).
 * Option `-m`: if the input contains a universal conjecture that SPASS-SPL refutes, then this option prints all facts over the test point set and the conjecture predicate that could not be derived. (If the test point scheme is not total over the query, we can still refute it but not return any facts here.)
 
-## SPASS-SPL (v0.6)
+### SPASS-SPL (v0.6)
 
 [SPASS-SPL (v0.6)](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) can solve clause sets modulo conjectures over the first-order fragment of pure positively grounded Horn Bernays-Schoenfinkel modulo simple linear real arithmetic (HBS(SLR)PP). To determine whether an HBS(SLR)PP clause set entails a universal conjecture (both encoded in one file in the [FTCNF language](#ftcnf-language)), execute [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) with the options `-d -n`:
 
