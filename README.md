@@ -16,10 +16,25 @@ by Martin Bromberger, Irina Dragoste, Rasha Faqeh, Christof Fetzer, Larry Gonzá
 
     chmod 755 run_selection.pl
     chmod 755 combine_results.pl
+    
+## Testing Functionality
+
+The following series of commands can be used to check the artifact for any technical issues. The results should be two tables as pdf files. The first one corresponds to the result table in our paper, but with the time limit decreased to 10 seconds. The second one is an extended version of the first table.
+
+    ./run_selection.pl --solver="SPASS-SPL" --timelimit=10
+    ./run_selection.pl --solver="SPASS-SPL-0_6" --timelimit=10
+    ./run_selection.pl --solver="vampire" --timelimit=10
+    ./run_selection.pl --solver="spacer" --timelimit=10
+    ./run_selection.pl --solver="cvc4" --timelimit=10
+    ./run_selection.pl --solver="z3" --timelimit=10
+    ./combine_results.pl
+    cd Results
+    make
+    xdg-open table.pdf &; xdg-open extended_table.pdf &
 
 ## Artifact Instructions
 
-This artifact contains two scripts that simplify the replication of the benchmark experiments presented in the paper. The first script [run_selection.pl](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/main/run_selection.pl) runs a selection of benchmarks for a given solver and stores its results in a CSV file in the folder [Results/CSV/](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/main/run_selection.pl). The second script [combine_results.pl](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/main/combine_results.pl) combines the returned CSV files into two latex tables: one corresponds to Table 1 from our paper and the other provides some additional details. A more detailed description of both scripts can be found after this section.
+This artifact contains two scripts that simplify the replication of the benchmark experiments presented in the paper. The first script [run_selection.pl](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/main/run_selection.pl) runs a selection of benchmarks for a given solver and stores its results in a CSV file in the folder [Results/CSV/](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/main/Results/CSV/). The second script [combine_results.pl](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/main/combine_results.pl) combines the returned CSV files into two latex tables: one corresponds to Table 1 from our paper and the other provides some additional details. A more detailed description of both scripts can be found after this section.
 
 ### Run Experiment
 The following series of commands execute the tools SPASS-SPL, SPASS-SPL v0.6, vampire, spacer, z3, and cvc4 on all applicable benchmarks with a time limit of 40 minutes (=2400 seconds). Running all commands at once takes roughly 31 hours. This is mainly due to the two SMT solvers z3 and cvc4 because they time out on most of the tested problems. Therefore, we decided to split the whole experiment into more managable parts. Each part can be executed in less than 5 hours. That should make it possible to run the experiment comfortably in the span of several days.
