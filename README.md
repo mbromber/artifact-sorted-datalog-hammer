@@ -6,16 +6,16 @@ by Martin Bromberger, Irina Dragoste, Rasha Faqeh, Christof Fetzer, Larry Gonzá
 
 1. Install Dependencies
 
-    cd packages
-    sudo dpkg -i *.deb
-    cd ..
+        cd packages
+        sudo dpkg -i *.deb
+        cd ..
 
 **Note** This installs all the dependencies for the replication of our experiments. The dependencies are saved as pip packages in the directory packages. This artifact assumes access to Python3.8 and pip3 20.0.2
 
 2. Grant execution permissions to scripts
 
-    chmod 755 run_selection.pl
-    chmod 755 combine_results.pl
+        chmod 755 run_selection.pl
+        chmod 755 combine_results.pl
     
 ## Testing Functionality
 
