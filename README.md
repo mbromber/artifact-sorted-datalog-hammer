@@ -47,16 +47,16 @@ The following series of commands execute the tools SPASS-SPL, SPASS-SPL v0.6, va
     ./run_selection.pl --solver="SPASS-SPL-0_6" --timelimit=2400
     ./run_selection.pl --solver="vampire" --timelimit=2400
     ./run_selection.pl --solver="spacer" --timelimit=2400
-    ./run_selection.pl --solver="cvc4" --timelimit=2400 --selection="Benchmarks/smt-selection_part1"
-    ./run_selection.pl --solver="cvc4" --timelimit=2400 --append --selection="Benchmarks/smt-selection_part2"
-    ./run_selection.pl --solver="cvc4" --timelimit=2400 --append --selection="Benchmarks/smt-selection_part3"
-    ./run_selection.pl --solver="cvc4" --timelimit=2400 --append --selection="Benchmarks/smt-selection_part4"
-    ./run_selection.pl --solver="cvc4" --timelimit=2400 --append --selection="Benchmarks/smt-selection_part5"
-    ./run_selection.pl --solver="z3" --timelimit=2400 --selection="Benchmarks/smt-selection_part1"
-    ./run_selection.pl --solver="z3" --timelimit=2400 --append --selection="Benchmarks/smt-selection_part2"
-    ./run_selection.pl --solver="z3" --timelimit=2400 --append --selection="Benchmarks/smt-selection_part3"
-    ./run_selection.pl --solver="z3" --timelimit=2400 --append --selection="Benchmarks/smt-selection_part4"
-    ./run_selection.pl --solver="z3" --timelimit=2400 --append --selection="Benchmarks/smt-selection_part5"
+    ./run_selection.pl --solver="cvc4" --timelimit=2400 --selection="Selection/smt-selection_part1"
+    ./run_selection.pl --solver="cvc4" --timelimit=2400 --append --selection="Selection/smt-selection_part2"
+    ./run_selection.pl --solver="cvc4" --timelimit=2400 --append --selection="Selection/smt-selection_part3"
+    ./run_selection.pl --solver="cvc4" --timelimit=2400 --append --selection="Selection/smt-selection_part4"
+    ./run_selection.pl --solver="cvc4" --timelimit=2400 --append --selection="Selection/smt-selection_part5"
+    ./run_selection.pl --solver="z3" --timelimit=2400 --selection="Selection/smt-selection_part1"
+    ./run_selection.pl --solver="z3" --timelimit=2400 --append --selection="Selection/smt-selection_part2"
+    ./run_selection.pl --solver="z3" --timelimit=2400 --append --selection="Selection/smt-selection_part3"
+    ./run_selection.pl --solver="z3" --timelimit=2400 --append --selection="Selection/smt-selection_part4"
+    ./run_selection.pl --solver="z3" --timelimit=2400 --append --selection="Selection/smt-selection_part5"
     
 ### Show Results
 The following commands combine the results computed and stored in the previous step into two tables and opens them in the Document Viewer.
