@@ -18,6 +18,7 @@ by Martin Bromberger, Irina Dragoste, Rasha Faqeh, Christof Fetzer, Larry Gonzá
 
         chmod 755 run_selection.pl
         chmod 755 combine_results.pl
+        chmod 755 bin/*
     
 ## Testing Functionality
 
