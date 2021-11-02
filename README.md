@@ -39,7 +39,7 @@ The following series of commands can be used to check the artifact for any techn
 
 ## Artifact Instructions
 
-This artifact contains two scripts that simplify the replication of the benchmark experiments presented in the paper. The first script [run_selection.pl](#runselection) runs a selection of benchmarks for a given solver and stores its results in a CSV file in the folder [Results/CSV/](https://github.com/mbromber/artifact-sorted-datalog-hammer/tree/master/Results/CSV/). The second script [combine_results.pl](#combineresults) combines the returned CSV files into two LaTeX tables: one corresponds to the result table from our paper and the other provides some additional details. A more detailed description of both scripts can be found after this section.
+This artifact contains two scripts that simplify the replication of the benchmark experiments presented in the paper. The first script [run_selection.pl](#runselection) runs a selection of benchmarks for a given solver and stores its results in a CSV file in the folder [Results/CSV/](Results/CSV/). The second script [combine_results.pl](#combineresults) combines the returned CSV files into two LaTeX tables: one corresponds to the result table from our paper and the other provides some additional details. A more detailed description of both scripts can be found after this section.
 
 ### Run Experiment
 The following series of commands execute the tools [SPASS-SPL](#spass-spl-v07), [SPASS-SPL v0.6](#spass-spl-v06), vampire, spacer, z3, and cvc4 on all applicable benchmarks with a time limit of 40 minutes (=2400 seconds). Running all commands at once takes roughly 31 hours. This is mainly due to the two SMT solvers z3 and cvc4 that time out on most of the tested problems. Therefore, we decided to split the whole experiment into more managable parts. Each part can be executed in less than 5 hours. That should make it possible to run the experiment comfortably in the span of several days including breaks between each step.
@@ -74,7 +74,7 @@ The following commands combine the results computed and stored in the previous s
 **Note:** We ran the experiments in the [TACAS 22 artifact evaluation VM](https://zenodo.org/record/5537147) on a system with an Intel Core i7-9700K CPU with
 eight 3.60GHz cores. Your run times may differ from the results in the paper depending on the system you use, but the difference in the results should be consistent over all tools. Therefore, you should be able to reproduce the general tendency of the results from the paper independent of the system you use.
 
-### The run_selection.pl Script in Detail{#runselection}
+### The run_selection.pl Script in Detail {#runselection}
 
 The script [run_selection.pl](run_selection.pl) can be used to run a given solver on a selection of benchmarks and to store its results in a CSV file in the folder [Results/CSV/](Results/CSV/). Moreover, the results are also printed to the console to show the progress of the script. The format is `<benchmark name>,<result>,<tp-size>,<hc-sizes>,<run time>,<max memory>,<error messsages>`. `<tp-size>` stands for the size of the largest test-point set introduced by the sorted/original Hammer if the solver is SPASS-SPL or SPASS-SPL-0_6. `<hc-size>` stands for size of the hammered universal conjecture
 if the solver is SPASS-SPL or SPASS-SPL-0_6. For all other solvers, both entries are always `-`.
@@ -100,7 +100,7 @@ This option specifies a memory limit of MEMORY (in Gbit) for each benchmark prob
 By default the script overwrites the CSV file storing the previous results for the solver/tool. With this option the new results are appended to the old ones. This makes it possible to split the selection of benchmarks over several files in order to make breaks in between.
 
 
-### The combine_results.pl Script in Detail{#combineresults}
+### The combine_results.pl Script in Detail {#combineresults}
 
 The script [combine_results.pl](combine_results.pl) can be used to combine the CSV files returned by the [run_selection.pl script](#runselection) into two LaTeX tables: one corresponds to the result table from our paper and the other provides some additional details.
 
@@ -142,21 +142,21 @@ It is possible to modify the list of benchmark problems whose results are listed
 
 ### SPASS-SPL (v0.7)
 
-[SPASS-SPL (v0.7)](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) can be used as a decision procedure for the first-order fragment of pure approximately grounded Horn Bernays-Schoenfinkel modulo simple linear (mixed real-integer) arithmetic (HBS(SLR)AP). To solve an HBS(SLR)AP problem encoded in the [FTCNF language](#ftcnf-language), execute [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) with the option `-d`:
+[SPASS-SPL (v0.7)](bin/SPASS-SPL) can be used as a decision procedure for the first-order fragment of pure approximately grounded Horn Bernays-Schoenfinkel modulo simple linear (mixed real-integer) arithmetic (HBS(SLR)AP). To solve an HBS(SLR)AP problem encoded in the [FTCNF language](#ftcnf-language), execute [SPASS-SPL](bin/SPASS-SPL) with the option `-d`:
 
     ./bin/SPASS-SPL -d <file>.ftcnf
 
-[SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) will then apply the sorted Datalog Hammer to transform the HBS(SLR)AP clause set (modulo a universal conjecture) into an equisatisfiable Datalog program. After that is done, [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) solves the Datalog program with the Datalog reasoner [VLog](https://github.com/karmaresearch/vlog) that has been integrated into [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) via an API.
+[SPASS-SPL](bin/SPASS-SPL) will then apply the sorted Datalog Hammer to transform the HBS(SLR)AP clause set (modulo a universal conjecture) into an equisatisfiable Datalog program. After that is done, [SPASS-SPL](bin/SPASS-SPL) solves the Datalog program with the Datalog reasoner [VLog](https://github.com/karmaresearch/vlog) that has been integrated into [SPASS-SPL](bin/SPASS-SPL) via an API.
 
-[SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) returns `Conjecture proven!` if the universal conjecture is entailed by the clause set and otherwise `Conjecture refuted!`.
+[SPASS-SPL](bin/SPASS-SPL) returns `Conjecture proven!` if the universal conjecture is entailed by the clause set and otherwise `Conjecture refuted!`.
 
-If the input file `<file>.ftcnf` contains no universal conjecture, then [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) will assume `false` as the universal conjecture. In this case, [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) returns `Conjecture proven!` if the clause set is unsatisfiable (because "false" can only be entailed by an unsatisfiable clause set) and `Conjecture refuted!` if the clause set is satisfiable.
+If the input file `<file>.ftcnf` contains no universal conjecture, then [SPASS-SPL](bin/SPASS-SPL) will assume `false` as the universal conjecture. In this case, [SPASS-SPL](bin/SPASS-SPL) returns `Conjecture proven!` if the clause set is unsatisfiable (because "false" can only be entailed by an unsatisfiable clause set) and `Conjecture refuted!` if the clause set is satisfiable.
 
 #### Transformation of FTCNF problems into other input languages
 
-[SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) can transform FTCNF problems into the SMT-LIB 2.6 and into the CHC competition format. The respective options to do so are `-S -p` and `-C -p`.
+[SPASS-SPL](bin/SPASS-SPL) can transform FTCNF problems into the SMT-LIB 2.6 and into the CHC competition format. The respective options to do so are `-S -p` and `-C -p`.
 
-[SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL) can also be used to transform FTCNF problems after the application of the sorted Hammer into the DFG language of SPASS (with the options `-d -D -p`) and from DFG with the tool [dfg2tptp](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/dfg2tptp) in the `bin` folder into the tptp format.
+[SPASS-SPL](bin/SPASS-SPL) can also be used to transform FTCNF problems after the application of the sorted Hammer into the DFG language of SPASS (with the options `-d -D -p`) and from DFG with the tool [dfg2tptp](bin/dfg2tptp) in the `bin` folder into the tptp format.
 
 We already transformed all problems into the various formats. They can be found in the `Benchmarks` folder under the folder named after the respective file ending. For instance, `Benchmarks/smt2/ecu_u1.smt2` is the output of `./bin/SPASS-SPL -S -p Benchmarks/ftcnf/ecu_u1.ftcnf`
 
@@ -169,26 +169,26 @@ We already transformed all problems into the various formats. They can be found 
 
 ### SPASS-SPL (v0.6)
 
-[SPASS-SPL (v0.6)](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) can solve clause sets modulo conjectures over the first-order fragment of pure positively grounded Horn Bernays-Schoenfinkel modulo simple linear real arithmetic (HBS(SLR)PP). To determine whether an HBS(SLR)PP clause set entails a universal conjecture (both encoded in one file in the [FTCNF language](#ftcnf-language)), execute [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) with the options `-d -n`:
+[SPASS-SPL (v0.6)](bin/SPASS-SPL-0_6) can solve clause sets modulo conjectures over the first-order fragment of pure positively grounded Horn Bernays-Schoenfinkel modulo simple linear real arithmetic (HBS(SLR)PP). To determine whether an HBS(SLR)PP clause set entails a universal conjecture (both encoded in one file in the [FTCNF language](#ftcnf-language)), execute [SPASS-SPL](bin/SPASS-SPL-0_6) with the options `-d -n`:
 
     ./bin/SPASS-SPL-v0_6 -d -n <file>.ftcnf
 
-To determine whether a HBS(SLR)PP clause set is satisfiable (encoded in the [FTCNF language](#ftcnf-language)), execute [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) with the options `-d`:
+To determine whether a HBS(SLR)PP clause set is satisfiable (encoded in the [FTCNF language](#ftcnf-language)), execute [SPASS-SPL](bin/SPASS-SPL-0_6) with the options `-d`:
 
     ./bin/SPASS-SPL-v0_6 -d <file>.ftcnf
 
-In both cases, [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) will then apply the original Datalog Hammer to transform the HBS(SLR)PP clause set (modulo a universal conjecture) into an equisatisfiable Datalog program. After that is done, [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) solves the Datalog program with the Datalog reasoner [VLog](SPASS-SPL solves the Datalog program with the Datalog reasoner VLog that has been integrated into SPASS-SPL via an API.) that has been integrated into [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) via an API.
+In both cases, [SPASS-SPL](bin/SPASS-SPL-0_6) will then apply the original Datalog Hammer to transform the HBS(SLR)PP clause set (modulo a universal conjecture) into an equisatisfiable Datalog program. After that is done, [SPASS-SPL](bin/SPASS-SPL-0_6) solves the Datalog program with the Datalog reasoner [VLog](SPASS-SPL solves the Datalog program with the Datalog reasoner VLog that has been integrated into SPASS-SPL via an API.) that has been integrated into [SPASS-SPL](bin/SPASS-SPL-0_6) via an API.
 
 SPASS-SPL returns `Conjecture proven!` if the universal conjecture is entailed by the clause set and otherwise `Conjecture refuted!`.
 
-If the input file `<file>.ftcnf` contains no universal conjecture, then SPASS-SPL will assume `false` as the universal conjecture. In this case, [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) returns `Conjecture proven!` if the clause set is unsatisfiable (because "false" can only be entailed by an unsatisfiable clause set) and `Conjecture refuted!` if the clause set is satisfiable.
+If the input file `<file>.ftcnf` contains no universal conjecture, then SPASS-SPL will assume `false` as the universal conjecture. In this case, [SPASS-SPL](bin/SPASS-SPL-0_6) returns `Conjecture proven!` if the clause set is unsatisfiable (because "false" can only be entailed by an unsatisfiable clause set) and `Conjecture refuted!` if the clause set is satisfiable.
 
 ### Other Tools
 For comparison, we also tested for our experiments several state-of-the-art theorem provers for related logics (with the best settings we found):
-* the satisfiability modulo theories (SMT) solver [cvc4-1.8](bin/cvc4) [3](#References) with settings `--multi-trigger-cache --full-saturate-quant`;
-* the SMT solver [z3-4.8.12](bin/z3) [1](#References) with its default settings;
-* the constrained horn clause (CHC) solver [spacer](bin/z3) [2](#References) with its default settings (needs to be executed via [z3-4.8.12](bin/z3) by giving it an smt2 input file that defines the input logic as HORN);
-* the first-order theorem prover [vampire-4.5.1](bin/vampire) [4](#References) with settings `--memory_limit 8000 --time_limit 0 -p off`, i.e., with memory extended to 8GB, without internal time limit and without proof output.
+* the satisfiability modulo theories (SMT) solver [cvc4-1.8](bin/cvc4) [[3]](#References) with settings `--multi-trigger-cache --full-saturate-quant`;
+* the SMT solver [z3-4.8.12](bin/z3) [[1]](#References) with its default settings;
+* the constrained horn clause (CHC) solver [spacer](bin/z3) [[2]](#References) with its default settings (needs to be executed via [z3-4.8.12](bin/z3) by giving it an smt2 input file that defines the input logic as HORN);
+* the first-order theorem prover [vampire-4.5.1](bin/vampire) [[4]](#References) with settings `--memory_limit 8000 --time_limit 0 -p off`, i.e., with memory extended to 8GB, without internal time limit and without proof output.
 
 For the SMT/CHC solvers, we directly transformed the benchmarks into their respective formats. For vampire, we applied our sorted Hammer before transforming to TPTP format. The various licenses of the tools can be found in the folder [Licenses/].
 
