@@ -39,7 +39,7 @@ The following series of commands can be used to check the artifact for any techn
 
 ## Artifact Instructions
 
-This artifact contains two scripts that simplify the replication of the benchmark experiments presented in the paper. The first script [run_selection.pl](#the-run_selection.pl-script-in-detail) runs a selection of benchmarks for a given solver and stores its results in a CSV file in the folder [Results/CSV/](Results/CSV/). The second script [combine_results.pl](#the-combine_results.pl-script-in-detail) combines the returned CSV files into two LaTeX tables: one corresponds to the result table from our paper and the other provides some additional details. A more detailed description of both scripts can be found after this section.
+This artifact contains two scripts that simplify the replication of the benchmark experiments presented in the paper. The first script [run_selection.pl](#the-script-for-running-benchmarks) runs a selection of benchmarks for a given solver and stores its results in a CSV file in the folder [Results/CSV/](Results/CSV/). The second script [combine_results.pl](#the-script-for-combining-results) combines the returned CSV files into two LaTeX tables: one corresponds to the result table from our paper and the other provides some additional details. A more detailed description of both scripts can be found after this section.
 
 ### Run Experiment
 The following series of commands execute the tools [SPASS-SPL](#spass-spl-v07), [SPASS-SPL v0.6](#spass-spl-v06), vampire, spacer, z3, and cvc4 on all applicable benchmarks with a time limit of 40 minutes (=2400 seconds). Running all commands at once takes roughly 31 hours. This is mainly due to the two SMT solvers z3 and cvc4 that time out on most of the tested problems. Therefore, we decided to split the whole experiment into more managable parts. Each part can be executed in less than 5 hours. That should make it possible to run the experiment comfortably in the span of several days including breaks between each step.
@@ -74,7 +74,7 @@ The following commands combine the results computed and stored in the previous s
 **Note:** We ran the experiments in the [TACAS 22 artifact evaluation VM](https://zenodo.org/record/5537147) on a system with an Intel Core i7-9700K CPU with
 eight 3.60GHz cores. Your run times may differ from the results in the paper depending on the system you use, but the difference in the results should be consistent over all tools. Therefore, you should be able to reproduce the general tendency of the results from the paper independent of the system you use.
 
-### The run_selection.pl Script in Detail
+### The Script for Running Benchmarks
 
 The script [run_selection.pl](run_selection.pl) can be used to run a given solver on a selection of benchmarks and to store its results in a CSV file in the folder [Results/CSV/](Results/CSV/). Moreover, the results are also printed to the console to show the progress of the script. The format is `<benchmark name>,<result>,<tp-size>,<hc-sizes>,<run time>,<max memory>,<error messsages>`. `<tp-size>` stands for the size of the largest test-point set introduced by the sorted/original Hammer if the solver is SPASS-SPL or SPASS-SPL-0_6. `<hc-size>` stands for size of the hammered universal conjecture
 if the solver is SPASS-SPL or SPASS-SPL-0_6. For all other solvers, both entries are always `-`.
@@ -100,9 +100,9 @@ This option specifies a memory limit of MEMORY (in Gbit) for each benchmark prob
 By default the script overwrites the CSV file storing the previous results for the solver/tool. With this option the new results are appended to the old ones. This makes it possible to split the selection of benchmarks over several files in order to make breaks in between.
 
 
-### The combine_results.pl Script in Detail
+### The Script for Combining Results
 
-The script [combine_results.pl](combine_results.pl) can be used to combine the CSV files returned by the [run_selection.pl script](#the-run_selection.pl-script-in-detail) into two LaTeX tables: one corresponds to the result table from our paper and the other provides some additional details.
+The script [combine_results.pl](combine_results.pl) can be used to combine the CSV files returned by the [run_selection.pl script](#the-script-for-running-benchmarks) into two LaTeX tables: one corresponds to the result table from our paper and the other provides some additional details.
 
 #### Table Legends
 Columns:
