@@ -112,7 +112,7 @@ Columns:
 * **$B_{max}$:** the size of the largest test-point set introduced by the sorted Hammer.
 * **$B^o$:** the size of the test-point set introduced by the original Hammer
 * **$\Delta_{\phi}$:** the size of the hammered universal conjecture (after the sorted hammer).
-* $\Delta_{\phi}^o$: the size of the hammered universal conjecture (after the original hammer).
+* **$\Delta_{\phi}^o$:** the size of the hammered universal conjecture (after the original hammer).
 
 The remaining columns are labeled after the solvers/tools and list the respective results for each of the benchmark problems. In the case of the normal table, the results are compiled into one entry as follows:
 * An entry **"N/A"** means that there was no result for the benchmark problem in the tools CSV file. This happens if the selection file of the tool did not contain an entry for a file of the same name (format: PATH/NAME.EXTENSION). This is possible because not all problems can be expressed in every tools input format, e.g., it is not possible to encode a universal conjecture (or, to be more precise, its negation) in the CHC format and SPASS-SPL-0_6 is not sound when the problem contains integer variables.
