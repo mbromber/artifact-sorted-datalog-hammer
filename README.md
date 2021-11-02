@@ -39,10 +39,10 @@ The following series of commands can be used to check the artifact for any techn
 
 ## Artifact Instructions
 
-This artifact contains two scripts that simplify the replication of the benchmark experiments presented in the paper. The first script [run_selection.pl](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/run_selection.pl) runs a selection of benchmarks for a given solver and stores its results in a CSV file in the folder [Results/CSV/](https://github.com/mbromber/artifact-sorted-datalog-hammer/tree/master/Results/CSV/). The second script [combine_results.pl](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/combine_results.pl) combines the returned CSV files into two latex tables: one corresponds to Table 1 from our paper and the other provides some additional details. A more detailed description of both scripts can be found after this section.
+This artifact contains two scripts that simplify the replication of the benchmark experiments presented in the paper. The first script [run_selection.pl](#runselection) runs a selection of benchmarks for a given solver and stores its results in a CSV file in the folder [Results/CSV/](https://github.com/mbromber/artifact-sorted-datalog-hammer/tree/master/Results/CSV/). The second script [combine_results.pl](#combineresults) combines the returned CSV files into two LaTeX tables: one corresponds to the result table from our paper and the other provides some additional details. A more detailed description of both scripts can be found after this section.
 
 ### Run Experiment
-The following series of commands execute the tools [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer#spass-spl-v07), [SPASS-SPL v0.6](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/README.md#spass-spl-v06), vampire, spacer, z3, and cvc4 on all applicable benchmarks with a time limit of 40 minutes (=2400 seconds). Running all commands at once takes roughly 31 hours. This is mainly due to the two SMT solvers z3 and cvc4 that time out on most of the tested problems. Therefore, we decided to split the whole experiment into more managable parts. Each part can be executed in less than 5 hours. That should make it possible to run the experiment comfortably in the span of several days including breaks between each step.
+The following series of commands execute the tools [SPASS-SPL](#spass-spl-v07), [SPASS-SPL v0.6](#spass-spl-v06), vampire, spacer, z3, and cvc4 on all applicable benchmarks with a time limit of 40 minutes (=2400 seconds). Running all commands at once takes roughly 31 hours. This is mainly due to the two SMT solvers z3 and cvc4 that time out on most of the tested problems. Therefore, we decided to split the whole experiment into more managable parts. Each part can be executed in less than 5 hours. That should make it possible to run the experiment comfortably in the span of several days including breaks between each step.
 
 **Note:** It is also possible to run an abridged version of the experiment by decreasing the time limit. For instance, 10 minutes (=600 seconds) should be enough time to produce a fair approximation of the original results and takes overall only 8 hours to execute. This can be done by replacing all occurrences of `--timelimit=2400` with `--timelimit=600`.
 
@@ -71,13 +71,72 @@ The following commands combine the results computed and stored in the previous s
     xdg-open extended_table.pdf &
     cd ..
 
-### The run_selection.pl Script in Detail
+**Note:** We ran the experiments in the [TACAS 22 artifact evaluation VM](https://zenodo.org/record/5537147) on a system with an Intel Core i7-9700K CPU with
+eight 3.60GHz cores. Your run times may differ from the results in the paper depending on the system you use, but the difference in the results should be consistent over all tools. Therefore, you should be able to reproduce the general tendency of the results from the paper independent of the system you use.
 
-TODO
+### The run_selection.pl Script in Detail{#runselection}
 
-### The combine_results.pl Script in Detail
+The script [run_selection.pl](run_selection.pl) can be used to run a given solver on a selection of benchmarks and to store its results in a CSV file in the folder [Results/CSV/](Results/CSV/). Moreover, the results are also printed to the console to show the progress of the script. The format is `<benchmark name>,<result>,<tp-size>,<hc-sizes>,<run time>,<max memory>,<error messsages>`. `<tp-size>` stands for the size of the largest test-point set introduced by the sorted/original Hammer if the solver is SPASS-SPL or SPASS-SPL-0_6. `<hc-size>` stands for size of the hammered universal conjecture
+if the solver is SPASS-SPL or SPASS-SPL-0_6. For all other solvers, both entries are always `-`.
 
-TODO
+
+#### Synopsis
+    ./run_selection.pl [OPTIONS]
+    
+#### Options
+    --solver="NAME"
+The NAME of the solver/tool to be run on the selection of benchmarks. If this option is missing, SPASS-SPL is picked by default as the solver. Valid NAMEs are SPASS-SPL, SPASS-SPL-0_6, vampire, spacer, z3, and cvc4.
+
+    --selection="FILE"
+The FILE (path relative to the folder of this script) containing a selection of benchmarks. The FILE has to be formatted so each line contains a file path to a valid input file for the specified solver/tool. Examples for the various tools can be found in the folder [Selection/](Selection/). Each of those examples selects all applicable benchmarks from our benchmark set for the specified solver or solver class. If this option is missing, the script picks as default the corresponding selection file for the solver/tool from this folder.
+
+    --timelimit=TIME
+This option specifies a time limit of TIME (in seconds) for each benchmark problem. (By default no time limit is set.) This means the solver/tool is aborted if it cannot solve the problem in the specified time limit and the result `timeout` is stored in the entry for the problem of the respective CSV file. 
+
+    --max_memory=MEMORY
+This option specifies a memory limit of MEMORY (in Gbit) for each benchmark problem. (By default 8 Gbit is set as the memory limit.) This means the solver/tool is aborted if it cannot solve the problem given the specified memory limit. Unfortunately, the script cannot always recognize this. If it does, the result `memout` is stored in the entry for the problem of the respective CSV file. Otherwise, `error` is stored in the entry.
+
+    --append
+By default the script overwrites the CSV file storing the previous results for the solver/tool. With this option the new results are appended to the old ones. This makes it possible to split the selection of benchmarks over several files in order to make breaks in between.
+
+
+### The combine_results.pl Script in Detail{#combineresults}
+
+The script [combine_results.pl](combine_results.pl) can be used to combine the CSV files returned by the [run_selection.pl script](#runselection) into two LaTeX tables: one corresponds to the result table from our paper and the other provides some additional details.
+
+#### Table Legends
+Columns:
+* **Problem:** the name of the benchmark problem.
+* **Q:** the type of the problems conjecture, i.e., whether the conjecture is existential $\exists$ or universal $\forall$.
+* **Status:** the status of the benchmark problem, i.e., true if the conjecture is entailed and false otherwise.
+* **$B_{max}$:** the size of the largest test-point set introduced by the sorted Hammer.
+* **$B^o$:** the size of the test-point set introduced by the original Hammer
+* **$\Delta_{\phi}$:** the size of the hammered universal conjecture (after the sorted hammer).
+* $\Delta_{\phi}^o$: the size of the hammered universal conjecture (after the original hammer).
+
+The remaining columns are labeled after the solvers/tools and list the respective results for each of the benchmark problems. In the case of the normal table, the results are compiled into one entry as follows:
+* An entry **"N/A"** means that there was no result for the benchmark problem in the tools CSV file. This happens if the selection file of the tool did not contain an entry for a file of the same name (format: PATH/NAME.EXTENSION). This is possible because not all problems can be expressed in every tools input format, e.g., it is not possible to encode a universal conjecture (or, to be more precise, its negation) in the CHC format and SPASS-SPL-0_6 is not sound when the problem contains integer variables.
+* An entry **"timeout"** means that the tool could not solve the problem in the given time limit
+* An entry **"unknown"** means that the tool terminated in the timelimit without returning a result or an error.
+* An entry **"memout"** means that the tool ran out of memory (and our script was able to recognize this).
+* An entry **"error"** means that the tool exited with an error. (Sometimes "error" is returned because the tool ran out of memory and our script did not recognize it.)
+* An entry **"wrong result"** means that the tool exited with the wrong result, e.g., true although the status of the problem is false.
+* Otherwise, the entry contains the time needed (in seconds) to solve the problem.
+
+In the case of the extended table, the results are compiled into three subcolumns:
+* **result:** the returned result of the tool, i.e., "true" or "false" if the tool returned the correct result, "true (wrong result)" or "false (wrong result)" if the tool returned the wrong result, or "N/A", "timeout", "memout", "unknown" or "error" under the conditions described above.
+* **time:** the time needed until the solver returned its result.
+* **memory:** the maximum amount of memory used before the solver returned its result.
+
+#### Synopsis
+    ./combine_results.pl [OPTIONS]
+    
+#### Options
+    --solver_list="SOLVERS"
+A list of solver/tool names separated by a space, e.g., "SPASS-SPL z3". Valid names are SPASS-SPL, SPASS-SPL-0_6, vampire, spacer, z3, and cvc4. Only the results of the listed solvers are compiled into tables. By default all solvers are selected.
+
+
+It is possible to modify the list of benchmark problems whose results are listed in the table. This can be done by modifying the files [Selection/selected_benchmarks], [Selection/expected_results], and [Selection/conjecture_types]. (This is not necessary for the replication of experiments.)
 
 ## Tools Tested
 
@@ -123,6 +182,15 @@ In both cases, [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-h
 SPASS-SPL returns `Conjecture proven!` if the universal conjecture is entailed by the clause set and otherwise `Conjecture refuted!`.
 
 If the input file `<file>.ftcnf` contains no universal conjecture, then SPASS-SPL will assume `false` as the universal conjecture. In this case, [SPASS-SPL](https://github.com/mbromber/artifact-sorted-datalog-hammer/blob/master/bin/SPASS-SPL-0_6) returns `Conjecture proven!` if the clause set is unsatisfiable (because "false" can only be entailed by an unsatisfiable clause set) and `Conjecture refuted!` if the clause set is satisfiable.
+
+### Other Tools
+For comparison, we also tested for our experiments several state-of-the-art theorem provers for related logics (with the best settings we found):
+* the satisfiability modulo theories (SMT) solver [cvc4-1.8](bin/cvc4) [3](#References) with settings `--multi-trigger-cache --full-saturate-quant`;
+* the SMT solver [z3-4.8.12](bin/z3) [1](#References) with its default settings;
+* the constrained horn clause (CHC) solver [spacer](bin/z3) [2](#References) with its default settings (needs to be executed via [z3-4.8.12](bin/z3) by giving it an smt2 input file that defines the input logic as HORN);
+* the first-order theorem prover [vampire-4.5.1](bin/vampire) [4](#References) with settings `--memory_limit 8000 --time_limit 0 -p off`, i.e., with memory extended to 8GB, without internal time limit and without proof output.
+
+For the SMT/CHC solvers, we directly transformed the benchmarks into their respective formats. For vampire, we applied our sorted Hammer before transforming to TPTP format. The various licenses of the tools can be found in the folder [Licenses/].
 
 ## FTCNF Language
 FTCNF is the input language of SPASS-SPL. It is possible to express any BS(LA) formula in this language. SPASS-SPL has 3 sorts: "R" for Real, "I" for Integer, and "F", which stands for a finite set whose elements are exactly the constants of the sort. (This means that we SPASS-SPL supports only one first-order sort at the moment!) Default sort for all variables and constants is "R". Default sort for all predicates with an argument of sort "R" or "I" is "R". Default sort for all predicates with an argument of sort "F" is "F". In order to change the sort of a variable/constant, it has to be declared in the <preamble> of the input file. For instance `p(x:I),p(y:F)` declares the variable x as an integer variable and the variable y as a variable over F.
@@ -170,6 +238,16 @@ Existential conjectures cannot be encoded directly into the FTCNF format. Howeve
 first introducing a fresh unary predicate `Q`, adding the literal `Q(x)` to `<premisses>`, and finally by adding a clause `-> Q(x).` to our clause set.
 * The sorted Datalog hammer only works for simple bounds and approximately grounded inequalities whose finiteness can be approximated over non-recursive clauses. This includes all positively grounded inequalities.
 * The previous version of SPASS-SPL (v0.6) was not yet able to recognize and handle theory constraints beyond simple bounds, unless they are positvely grounded variable comparisons (i.e., $x \LAOP y$ with $\LAOP \in \{\leq, <, \neq, =, >, \geq\}$). As a provisional workaround, it was also possible to "highlight" positively grounded theory atoms `<catom>` manually. To do so, the theory atom had to be replaced by a first-order `<atom>` over a fresh predicate and the same variables as <catom>. The interpretation of `<atom>` can then be fixed to `<catom>` with the help of a theory pattern clause `<tclause> ::= <catom> || -> <atom>`. The Datalog hammer will then treat `<catom>` as if it were a positively grounded theory atom that always simplifies to true or false in elim(S,N). The user has to check themselves if this is actually the case or the result is no longer guaranteed to be sound. Although the current version of SPASS-SPL (v0.7) can recognize all approximately grounded (and therefore the subsumed positively grounded) inequalities automatically, we still kept the theory pattern feature so old input files can still be executed by SPASS-SPL (v0.7).
+
+# References
+
+1. Barrett, C., Conway, C., Deters,M., Hadarean, L., Jovanovic, D., King, T., Reynolds, A., Tinelli, C.: CVC4. In: CAV, LNCS, vol. 6806 (2011)
+
+2. Komuravelli, A., Gurfinkel, A., Chaki, S.: SMT-based model checking for recursive programs. In: CAV. Lecture Notes in Computer Science, vol. 8559, pp. 17–34. Springer (2014)
+
+3. de Moura, L., Bjørner, N.: Z3: An efficient SMT solver. In: Tools and Algorithms for the Construction and Analysis of Systems, LNCS, vol. 4963 (2008)
+
+4. Riazanov, A., Voronkov, A.: The design and implementation of vampire. AI Communications 15(2-3), 91–110 (2002)
 
 # Acknowledgements
 
