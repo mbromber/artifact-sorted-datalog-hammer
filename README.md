@@ -24,9 +24,9 @@ https://github.com/mbromber/artifact-sorted-datalog-hammer
         sudo dpkg -i *.deb
         cd ..
 
-**Note** This installs all the dependencies for the replication of our experiments. The dependencies are saved as pip packages in the directory packages. This artifact assumes access to Python3.8 and pip3 20.0.2
+**Note:** This installs all the dependencies for the replication of our experiments. The dependencies are saved as pip packages in the directory packages. This artifact assumes access to Python3.8 and pip3 20.0.2
 
-**Note** We recommend to prevent the system from locking the screen automatically. This can be done with the following command: `gsettings set org.gnome.desktop.session idle-delay 0`
+**Note:** We recommend to prevent the system from locking the screen automatically. This can be done with the following command: `gsettings set org.gnome.desktop.session idle-delay 0`
 
 2. Grant execution permissions to scripts
 
@@ -174,7 +174,7 @@ If the input file `<file>.ftcnf` contains no universal conjecture, then [SPASS-S
 
 We already transformed all problems into the various formats. They can be found in the `Benchmarks` folder under the folder named after the respective file ending. For instance, `Benchmarks/smt2/ecu_u1.smt2` is the output of `./bin/SPASS-SPL -S -p Benchmarks/ftcnf/ecu_u1.ftcnf`
 
-**Note** The FTCNF benchmark problems encode a set of clauses coupled with a conjecture. The tools have to check whether the conjecture is a consequence of the clause set. The transformations encode this via the counter example formulation, i.e., by negating the conjecture and adding it to the clause set. As a result, the transformed problem is unsatisfiable if and only if the conjecture is a consequence. Our run_selection.pl script is aware of this and stores the result "true" (i.e., true that the conjecture is a consequence) if a tool returns unsatisfiable for one of the transformed benchmark problems and "false" if it returns satisfiable.
+**Note:** The FTCNF benchmark problems encode a set of clauses coupled with a conjecture. The tools have to check whether the conjecture is a consequence of the clause set. The transformations encode this via the counter example formulation, i.e., by negating the conjecture and adding it to the clause set. As a result, the transformed problem is unsatisfiable if and only if the conjecture is a consequence. Our run_selection.pl script is aware of this and stores the result "true" (i.e., true that the conjecture is a consequence) if a tool returns unsatisfiable for one of the transformed benchmark problems and "false" if it returns satisfiable.
 
 #### Additional Options
 
