@@ -2,6 +2,20 @@
 
 by Martin Bromberger, Irina Dragoste, Rasha Faqeh, Christof Fetzer, Larry González, Markus Krötzsch, Maximilian Marx, Harish K Murali, and Christoph Weidenbach. 2021.
 
+## Abstract
+
+This is the artifact for the paper "A Sorted Datalog Hammer for Supervisor Verification Conditions Modulo Simple Linear Arithmetic".
+
+It contains and documents the tool SPASS-SPL, as well as all other tools and benchmarks necessary to reproduce the experiments from the paper. 
+SPASS-SPL contains an implementation of the sorted Datalog hammer (the main theoretical result in the paper) and uses the Datalog reasoner VLog via an API to solve the hammered formulas.
+To make the reproduction of the experiments easier, the artifact also contains scripts for running the experiments and compiling the result table included in the paper (Figure 2). For detailed instructions on how to reproduce the results, see the included README.md
+
+We will upload this artifact on Zenodo if the paper and artifact get accepted. This way we will guarantee that the artifact is archived permanently and stays publicly available.
+
+The artifact is also available online as a GitHub repository (containing the same files). The GitHub page has the advantage that it displays this readme file in an easier to read format:
+
+https://github.com/mbromber/artifact-sorted-datalog-hammer
+
 ## Setup Steps
 
 1. Install Dependencies
@@ -160,6 +174,8 @@ If the input file `<file>.ftcnf` contains no universal conjecture, then [SPASS-S
 
 We already transformed all problems into the various formats. They can be found in the `Benchmarks` folder under the folder named after the respective file ending. For instance, `Benchmarks/smt2/ecu_u1.smt2` is the output of `./bin/SPASS-SPL -S -p Benchmarks/ftcnf/ecu_u1.ftcnf`
 
+**Note** The FTCNF benchmark problems encode a set of clauses coupled with a conjecture. The tools have to check whether the conjecture is a consequence of the clause set. The transformations encode this via the counter example formulation, i.e., by negating the conjecture and adding it to the clause set. As a result, the transformed problem is unsatisfiable if and only if the conjecture is a consequence. Our run_selection.pl script is aware of this and stores the result "true" (i.e., true that the conjecture is a consequence) if a tool returns unsatisfiable for one of the transformed benchmark problems and "false" if it returns satisfiable.
+
 #### Additional Options
 
 * Option `-h`: hammer statistics, prints statistics of the Datalog hammer. (The size of largest test point set and the size of hammered universal conjecture.)
@@ -177,7 +193,7 @@ To determine whether a HBS(SLR)PP clause set is satisfiable (encoded in the [FTC
 
     ./bin/SPASS-SPL-v0_6 -d <file>.ftcnf
 
-In both cases, [SPASS-SPL](bin/SPASS-SPL-0_6) will then apply the original Datalog Hammer to transform the HBS(SLR)PP clause set (modulo a universal conjecture) into an equisatisfiable Datalog program. After that is done, [SPASS-SPL](bin/SPASS-SPL-0_6) solves the Datalog program with the Datalog reasoner [VLog](SPASS-SPL solves the Datalog program with the Datalog reasoner VLog that has been integrated into SPASS-SPL via an API.) that has been integrated into [SPASS-SPL](bin/SPASS-SPL-0_6) via an API.
+In both cases, [SPASS-SPL](bin/SPASS-SPL-0_6) will then apply the original Datalog Hammer to transform the HBS(SLR)PP clause set (modulo a universal conjecture) into an equisatisfiable Datalog program. After that is done, [SPASS-SPL](bin/SPASS-SPL-0_6) solves the Datalog program with the Datalog reasoner [VLog](https://github.com/karmaresearch/vlog) that has been integrated into [SPASS-SPL](bin/SPASS-SPL-0_6) via an API.
 
 SPASS-SPL returns `Conjecture proven!` if the universal conjecture is entailed by the clause set and otherwise `Conjecture refuted!`.
 
