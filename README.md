@@ -4,13 +4,11 @@ by Martin Bromberger, Irina Dragoste, Rasha Faqeh, Christof Fetzer, Larry Gonzá
 
 ## Abstract
 
-This is the artifact for the paper "A Sorted Datalog Hammer for Supervisor Verification Conditions Modulo Simple Linear Arithmetic".
+This is the artifact for the paper "A Sorted Datalog Hammer for Supervisor Verification Conditions Modulo Simple Linear Arithmetic" accepted at TACAS 2022.
 
 It contains and documents the tool SPASS-SPL, as well as all other tools and benchmarks necessary to reproduce the experiments from the paper. 
 SPASS-SPL contains an implementation of the sorted Datalog hammer (the main theoretical result in the paper) and uses the Datalog reasoner VLog via an API to solve the hammered formulas.
 To make the reproduction of the experiments easier, the artifact also contains scripts for running the experiments and compiling the result table included in the paper (Figure 2). For detailed instructions on how to reproduce the results, see the included README.md
-
-We will upload this artifact on Zenodo if the paper and artifact get accepted. This way we will guarantee that the artifact is archived permanently and stays publicly available.
 
 The artifact is also available online as a GitHub repository (containing the same files). The GitHub page has the advantage that it displays this readme file in an easier to read format:
 
@@ -27,6 +25,8 @@ https://github.com/mbromber/artifact-sorted-datalog-hammer
 **Note:** This installs all the dependencies for the replication of our experiments. The dependencies are saved as pip packages in the directory packages. This artifact assumes access to Python3.8 and pip3 20.0.2
 
 **Note:** We recommend to prevent the system from locking the screen automatically. This can be done with the following command: `gsettings set org.gnome.desktop.session idle-delay 0`
+
+**Note:** Further dependencies may need to be installed if the artifact is not setup in the [TACAS 22 artifact evaluation VM](https://zenodo.org/record/5537147).
 
 2. Grant execution permissions to scripts
 
@@ -87,8 +87,6 @@ The following commands combine the results computed and stored in the previous s
 
 **Note:** We ran the experiments in the [TACAS 22 artifact evaluation VM](https://zenodo.org/record/5537147) on a system with an Intel Core i7-9700K CPU with
 eight 3.60GHz cores. Your run times may differ from the results in the paper depending on the system you use, but the difference in the results should be consistent over all tools. Therefore, you should be able to reproduce the general tendency of the results from the paper independent of the system you use.
-
-**Note:** The previous versions of our scripts had some limitations that we fixed in the meantime. For an SMT/CHC solver, they determined only whether the solver returned sat, unsat, or terminated without one of the two results. The latter was always marked as a timeout. The current versions now also recognize whether the solver returned unknown, actually reached the time limit or exited with an error (usually because the solver needed too much memory). As a result, we can now determine that z3 exited with an error on the problem lc_u5 (most likely due to a memout) and cvc4 returned unknown for the problems lc_e2, lc_e3, lc_u1, and lc_u2. We plan to add this information to the camera ready version of the paper if it gets accepted.
 
 ### The Script for Running Benchmarks
 
